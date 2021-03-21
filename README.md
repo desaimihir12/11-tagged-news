@@ -20,7 +20,7 @@ And then move into your repo by using GitBash.
 Or you can simply run this command, this will update your main from main repo, so make sure your feature branch also has this changes and then start working.
 #### `git pull upstream main`
 6. Add, commit and push your changes in dev-branch in your local repository. (Do this step after making your changes)
-#### `git add .`
+#### `git add -A`
 #### `git commit -m "<COMMIT MESSAGE>"`
 7. This step will update your forked repo with the changes that you made in your dev-branch in your local repo.
 [Learn more about pushing commits to remote repo](https://docs.github.com/en/github/using-git/pushing-commits-to-a-remote-repository)
