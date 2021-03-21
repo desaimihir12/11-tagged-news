@@ -17,6 +17,8 @@ And then move into your repo by using GitBash.
 4. Before adding your changes, create a new feature branch so that the code in the main is not changed. Follow the given convention for the branch name. (Only need to do this step once if a branch is not created)
 #### `git checkout -b dev-<YOUR NAME>`
 5. If there has been any changes in the main repo after you have cloned your repo, make sure to sync your repo using [this guide](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork).
+Or you can simply run this command, this will update your main from main repo, so make sure your feature branch also has this changes and then start working.
+#### `git pull upstream main`
 6. Add, commit and push your changes in dev-branch in your local repository. (Do this step after making your changes)
 #### `git add .`
 #### `git commit -m "<COMMIT MESSAGE>"`
