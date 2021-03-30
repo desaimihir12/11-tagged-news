@@ -27,6 +27,10 @@ from account.views import (
     account_view,
 )
 
+from blog.views import (
+    post_view,
+    )
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home_screen_view, name="home"),
@@ -34,6 +38,7 @@ urlpatterns = [
     path('logout/', logout_view, name="logout"),
     path('login/', login_view, name="login"),
     path('account/', account_view, name="account"),
+    path('blog/', post_view, name="blog"),
 ]
 
 # if development envirement use this as folder
