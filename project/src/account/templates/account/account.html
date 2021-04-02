@@ -39,10 +39,15 @@
 
 <form class="form-signin" method="post">{% csrf_token %}
 
-  <h1 class="h3 mb-3 font-weight-normal">Account</h1>
+
+  <h1 class="h3 mb-3 font-weight-normal">Manage Account</h1>
+
+  <p>To change your Email </p>
 
   <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus value={{account_form.initial.email}}>
   
+  <p>To change your Username</p>
+
   <input type="text" name="username" id="inputUsername" class="form-control" placeholder="Username" required
   value="{{account_form.initial.username}}">
 
@@ -68,5 +73,10 @@
 
 </form>
 
+<p align="center">To change your Password</p>
+
+<div class="d-flex flex-column">
+  <a class="m-auto" href="{% url 'password_change' %}">Change password</a>
+</div>
 
 {% endblock content %}
