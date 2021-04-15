@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+	.all_posts{
+		  margin: 20px;
+	}
+</style>
+<div class="all_posts">
+	<div class="ui grid">
+		<div class = "row">
+			<div class = "ten wide column">
+				{% for obj in qs%}
+				<div class="ui fluid card">
+					<div class="content">
+						<a class="item">
+						    <div class="ui horizontal label">{{obj.author.username}}</div>
+						    {{obj.title}}
+						</a>
+					</div>
+					<div class="content">
+						{{obj.body}}
+					</div>	
+					<div class="ui small image">
+					  <!-- <img src="https://picsum.photos/200"> -->
+					  <img src={{obj.image.url}}>
+					</div>
+					<div class="content">
+						{{obj.count_vote}}
+						&nbsp;
+						<button class="ui primary button">↑</button>
+						<button class="ui primary button">↓</button>
+					</div>
+
+				</div>
+				{% endfor %}
+			</div>
+			<div class = "six wide column">
+				
+			</div>
+		</div>
+	</div>	
+</div>
+
+{% endblock content %}

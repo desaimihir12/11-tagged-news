@@ -26,6 +26,13 @@ class BlogPost(models.Model):
 
     def __str__(self):
         return self.title
+    def count_vote(self):
+        return self.upvote-self.downvote
+    def img(self):
+        var= str(self.image)
+        var= "/media_cdn/"+var
+        #var=var[5:]
+        return var
 
 class Comment(models.Model):
     body                = models.TextField(max_length=5000, null=False, blank=False)
