@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+	.all_posts{
+		   margin-left: 30%;
+	}
+	.image{
+		border-radius: 25px;
+		transition: border-radius 0.5s, width 1s ease, height 1s ease;
+	}
+	.image:hover{
+		border-radius: 0px;
+	}
+	.image:active {
+		width: 200% !important;
+		height: 200% !important;
+	}
+</style>
+<script>
+	// $(document).ready(function(){
+	// 	var mouse_inside = 0;
+	// 	$(".image").on({
+	// 	mouseenter: function () {
+	// 		// $(this).css("border-radius", "0px");
+	// 		mouse_inside=1;
+	// 	},
+	// 	mouseleave: function () {
+	// 		// $(this).css("border-radius", "25px");
+	// 		// $(this).animate({"border-radius": "25px"});
+	// 		mouse_inside=0;
+	// 	}
+	// 	});
+	// 	$(".image").hover(function(){
+	// 		if(mouse_inside>0)
+	// 		{
+	// 			$(this).animate({"border-radius": "0px"});
+	// 		}
+	// 	},function(){
+	// 		$(this).animate({"border-radius": "25px"});
+	// 	});
+	// 	$(".image").click(function(){
+	// 		$(this).fadeTo("fast", 0.5);
+	// 		$(this).fadeTo("fast", 1);
+	// 	});
+	// });
+	</script>
+<div class="all_posts">
+	<div class="ui grid">
+		<div class = "row">
+			<div class = "ten wide column">
+				{% for obj in qs%}
+				<div class="ui fluid card">
+					<div class="content">
+						<a class="item">
+						    <div class="ui horizontal label">{{obj.author.username}}</div>
+							<a href="{% url 'blog:detail' obj.slug %}" style="text-decoration: none">{{obj.title}}</a>
+						</a>
+					</div>
+					<div class="content">
+						{{obj.body}}
+					</div>	
+					<!-- <div class="ui small image">
+					  <img src="https://picsum.photos/200">
+					  <img src={{obj.image.url}}>
+					</div> -->
+					<div class="ui segment">
+						<img class="ui centered medium image", src={{obj.image.url}}>
+					</div>
+					<div class="content">
+						{{obj.count_vote}}
+						&nbsp;
+						<button class="ui primary button">↑</button>
+						<button class="ui primary button">↓</button>
+					</div>
+
+				</div>
+				{% endfor %}
+			</div>
+			<div class = "six wide column">
+				
+			</div>
+		</div>
+	</div>	
+</div>
+{% endblock content %}
