@@ -27,7 +27,31 @@
 			<div class="card-footer text-muted">
 			  Posted on {{blog_post.date_published}} by {{blog_post.author}}
 			</div>
+			
+			{% if visible %}
+			<form class="create-comment" method="POST" enctype="multipart/form-data">{% csrf_token %}
+				<div class="form-group">
+					<label for="id_body">Comment</label>
+					<textarea class="form-control" rows="10" type="text" name="body" id="id_body" placeholder="Write your thoughts..." required></textarea>
+				</div>
+
+				<button class="submit-button btn btn-lg btn-primary btn-block" type="submit">POST</button>
+			</form>
+			{% endif %}
+
+			{% for comm in comments %}
+				<h5 class="card-title">{{comm.body}}</h2>
+				{% if user == comm.author.username%}
+					<a href="{% url 'blog:editcomment' comm.id%}">Edit</a>
+				{% endif %}
+				<p>upvote - {{comm.upvote}}</p>
+				<p>downvote - {{comm.downvote}}</p>
+				<p>Posted By {{comm.author.username}}</p>
+				<p>Posted on {{comm.date_published}}</p>
+			{% endfor %}
 		</div>
+
+		
 	</div>
 </div>
 

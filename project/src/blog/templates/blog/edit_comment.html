@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<style type="text/css">
+	.card{
+		max-width: 700px;
+	}
+	.container{
+		padding:20px;
+	}
+</style>
+
+<div class="container">
+	<div class="row">
+
+		<!-- Blog Post -->
+		<div class="card m-auto">
+			<form class="create-comment" method="POST" enctype="multipart/form-data">{% csrf_token %}
+				<div class="form-group">
+					<label for="id_body">Comment</label>
+					<textarea class="form-control" rows="10" type="text" name="body" id="id_body" >{{form.initial.body}}</textarea>
+				</div>
+
+				<button class="submit-button btn btn-lg btn-primary btn-block" type="submit">Update</button>
+			</form>			
+		</div>
+
+		
+	</div>
+</div>
+
+	
+
+{% endblock content %}
