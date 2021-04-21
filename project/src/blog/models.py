@@ -44,7 +44,7 @@ class Comment(models.Model):
     downvote            = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.body
+        return str(self.id) + self.body
 
 class PostVote(models.Model):
     TYPE                =   (
