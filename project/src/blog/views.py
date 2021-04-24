@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import BlogPost as blog
 from .models import Comment
-from .forms import CreateCommentForm, UpdateCommentForm
+from .forms import CreateCommentForm, UpdateCommentForm, CreateBlogPostForm
+from account.models import Account
 # Create your views here.
 def post_view(request):
 	qs=blog.objects.all()
@@ -61,3 +62,23 @@ def update_comment_view(request, id):
 
 	context['form'] = form
 	return render(request, "blog/edit_comment.html", context)
+
+def create_blog_view(request):
+
+	context = {}
+
+	user = request.user
+	if not user.is_authenticated:
+		return redirect('login')
+
+	form = CreateBlogPostForm(request.POST or None, request.FILES or None)
+	if form.is_valid():
+		obj = form.save(commit=False)
+		author = Account.objects.filter(email=request.user.email).first()
+		obj.author = author
+		obj.save()
+		form = CreateBlogPostForm()
+
+	context['form'] = form
+
+	return render(request, 'blog/create_post_form.html', context)
