@@ -45,6 +45,8 @@ class Comment(models.Model):
 
     def __str__(self):
         return str(self.id) + self.body
+    def count_vote(self):
+        return self.upvote-self.downvote
 
 class PostVote(models.Model):
     TYPE                =   (

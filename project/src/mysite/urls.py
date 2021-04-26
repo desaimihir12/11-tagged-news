@@ -30,6 +30,7 @@ from account.views import (
 
 from blog.views import (
     post_view,
+    create_blog_view,
     )
 
 urlpatterns = [
@@ -64,7 +65,7 @@ urlpatterns = [
 
     path('account/', account_view, name="account"),
     path('blog/', post_view, name="blog"),
-    path('blog1/', include('blog.urls', 'blog'))
+    path('blog1/', include('blog.urls', 'blog')),
 ]
 
 # if development envirement use this as folder

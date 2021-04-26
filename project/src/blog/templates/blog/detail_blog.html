@@ -40,14 +40,53 @@
 			{% endif %}
 
 			{% for comm in comments %}
-				<h5 class="card-title">{{comm.body}}</h2>
+				<!-- <h5 class="card-title">{{comm.body}}</h2>
 				{% if user == comm.author.username%}
 					<a href="{% url 'blog:editcomment' comm.id%}">Edit</a>
 				{% endif %}
 				<p>upvote - {{comm.upvote}}</p>
 				<p>downvote - {{comm.downvote}}</p>
 				<p>Posted By {{comm.author.username}}</p>
-				<p>Posted on {{comm.date_published}}</p>
+				<p>Posted on {{comm.date_published}}</p> -->
+				<div class="ui fluid card">
+					<div class="content" >
+						<a class="item">
+							<div class="ui horizontal label">
+								<h5 class="card-title">{{comm.author.username}}</h5>
+							</div>
+						</a>
+						<button class="ui compact button" data-tooltip="{{comm.date_published}}" data-position="right center">
+							<i class="info icon"></i>
+						</button>
+						{% if user == comm.author.username%}
+							<a href="{% url 'blog:editcomment' comm.id%}">Edit</a>
+						{% endif %}
+					</div>
+					<div class="content">
+						<h5 class="card-title">{{comm.body}}</h5>
+					</div>
+					<div class="content">
+						<div class="ui buttons" id="vote">
+							<div class="ui vertical animated button" tabindex="0">
+								<div class="visible content">
+									<i class="angle up icon"></i>	
+								</div>
+								<div class="hidden content">
+									  <i class="angle double up icon"></i>
+								</div>
+							</div>
+							<div class="or" data-text={{comm.count_vote}}></div>
+							<div class="ui vertical animated button" tabindex="0">
+								<div class="visible content">
+									<i class="angle down icon"></i>	
+								</div>
+								<div class="hidden content">
+									  <i class="angle double down icon"></i>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			{% endfor %}
 		</div>
 
