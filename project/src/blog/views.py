@@ -39,6 +39,10 @@ def detail_blog_view(request, slug):
 	return render(request, 'blog/detail_blog.html', context)
 
 def update_comment_view(request, id):
+
+	if not request.user.is_authenticated:
+		return redirect("blog")
+
 	com = get_object_or_404(Comment, id=id)
 	context = {}
 	form = UpdateCommentForm()
