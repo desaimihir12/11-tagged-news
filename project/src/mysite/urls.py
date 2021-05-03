@@ -26,6 +26,10 @@ from account.views import (
     logout_view,
     login_view,
     account_view,
+
+    profile_view,
+    edit_profile_view
+
 )
 
 from blog.views import (
@@ -66,6 +70,8 @@ urlpatterns = [
     path('account/', account_view, name="account"),
     path('blog/', post_view, name="blog"),
     path('blog1/', include('blog.urls', 'blog')),
+    path('account/profile/<username>', profile_view, name="profile"),
+    path('account/profile/<username>/edit', edit_profile_view, name="editprofile")
 ]
 
 # if development envirement use this as folder

@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<style>
+	.all_posts{
+		   margin-left: 30%;
+	}
+	.image{
+		border-radius: 25px;
+		transition: border-radius 0.5s, width 1s ease, height 1s ease;
+	}
+	.image:hover{
+		border-radius: 0px;
+	}
+	.image:active {
+		width: 200% !important;
+		height: 200% !important;
+	}
+	#vote
+	{
+		/* width : 100%; */
+	}
+	#share
+	{
+		/* width:50% ; */
+	}
+	#comment
+	{
+		/* width:49% ; */
+	}
+</style>
+
+<body>
+    <img class="rounded-circle account-img" src="{{user.avatar.url}}" height="100" width="100">
+
+	<h2 class="account-heading">{{ user.username }}</h2>
+	<h2 class="account-heading">{{ user.email }}</h2>
+	{% if request.user == user %}
+		<a href="{% url 'editprofile' user.username%}">Edit Profile</a>
+	{% endif %}
+    {% for blog in blogs%}
+				<div class="ui fluid card">
+					<div class="content">
+						<a class="item">
+						    <div class="ui horizontal label">{{blog.author.username}}</div>
+							<a href="{% url 'blog:detail' blog.slug %}" style="text-decoration: none">{{blog.title}}</a>
+						</a>
+					</div>
+					<div class="content">
+						{{blog.body}}
+					</div>	
+					<!-- <div class="ui small image">
+					  <img src="https://picsum.photos/200">
+					  <img src={{obj.image.url}}>
+					</div> -->
+					<div class="ui segment">
+						<img class="ui centered medium image", src={{blog.image.url}} >
+					</div>
+					<div class="content">
+						<div class="all-buttons">
+							<!-- show votes,upvote and downvote -->
+							<div class="ui buttons" id="vote">
+								<div class="ui vertical animated button" tabindex="0">
+									<div class="visible content">
+										<i class="angle up icon"></i>	
+									</div>
+									<div class="hidden content">
+										  <i class="angle double up icon"></i>
+									</div>
+								</div>
+								<div class="or" data-text={{blog.count_vote}}></div>
+								<div class="ui vertical animated button" tabindex="0">
+									<div class="visible content">
+										<i class="angle down icon"></i>	
+									</div>
+									<div class="hidden content">
+										  <i class="angle double down icon"></i>
+									</div>
+								</div>
+							</div>
+							<div class="ui vertical animated button" tabindex="0" onclick="pmodal()">
+								<div class="visible content">
+									<i class="share icon"></i>	
+								</div>
+								<div class="hidden content">
+										Share
+								</div>
+							</div>
+							<a href="{% url 'blog:detail' blog.slug %}" class="ui vertical animated button" tabindex="0"> 
+								<div class="visible content">
+									<i class="comments icon"></i>	
+								</div>
+								<div class="hidden content">
+									Comment
+								</div>
+							</a>
+							
+							
+						</div>
+					</div>
+
+				</div>
+				{% endfor %}
+</body>
+
+{% endblock content %}
