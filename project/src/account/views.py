@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from account.forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateForm
-
-
+from account.models import Account
+from blog.models import BlogPost
 def registration_view(request):
 	context = {}
 	if request.POST:
@@ -82,3 +82,47 @@ def account_view(request):
 
 	context['account_form'] = form
 	return render(request, "account/account.html", context)
+
+def profile_view(request, username):
+	user = get_object_or_404(Account, username=username)
+	context = {}
+	context['user'] = user
+
+	blog_posts = BlogPost.objects.filter(author=user)
+	context['blogs'] = blog_posts
+	return render(request, "account/profile.html", context)
+
+def edit_profile_view(request, username):
+	loginuser = request.user
+	user = get_object_or_404(Account, username=username)
+	if(loginuser != user):
+		return redirect('/account/profile/' + username)
+	context = {}
+
+	if not request.user.is_authenticated:
+			return redirect("login")
+
+	if request.POST:
+		form = AccountUpdateForm(request.POST or None,request.FILES or None, instance=user)
+		if form.is_valid():
+			# form.initial = {
+			# 		"email": request.POST['email'],
+			# 		"username": request.POST['username'],
+			# 		"avatar": request.POST['avatar']
+			# }
+			obj = form.save(commit=False)
+			obj.save()
+			context['success_message'] = "Updated"
+			user = obj
+
+	form = AccountUpdateForm(
+
+		initial={
+				"email": user.email, 
+				"username": user.username,
+				"avatar": user.avatar
+			}
+		)
+
+	context['account_form'] = form
+	return render(request, "account/editprofile.html", context)
