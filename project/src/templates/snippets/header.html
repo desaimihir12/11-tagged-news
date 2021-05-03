@@ -27,7 +27,7 @@
 		<a class="p-2 text-dark" href="{% url 'blog:create' %}">Create Post</a>
 		<a class="p-2 text-dark" href="{% url 'blog' %}">Blog</a>
 		<a class="p-2 text-dark" href="{% url 'home' %}">Home</a>
-		<a class="p-2 text-dark" href="{% url 'account' %}">Account</a>
+		<a class="p-2 text-dark" href="{% url 'profile' request.user.username %}">Profile</a>
 		<a class="p-2 text-dark" href="{% url 'logout' %}">Logout</a>
 	{% else %}
 		<a class="p-2 text-dark" href="{% url 'blog' %}">Blog</a>
