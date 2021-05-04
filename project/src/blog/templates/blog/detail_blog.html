@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<style type="text/css">
+	.card{
+		max-width: 700px;
+	}
+	.container{
+		padding:20px;
+	}
+</style>
+
+<div class="container">
+	<div class="row">
+
+		<!-- Blog Post -->
+		<div class="card m-auto">
+			<img class="card-img-top" src="{{blog_post.image.url}}">
+			<div class="card-body mt-2 mb-2">
+			  <h2 class="card-title">{{blog_post.title}}</h2>
+			  <p class="card-text">{{blog_post.body|safe}}</p>
+			  {% if blog_post.author == request.user %}
+			  	<a href="#" class="btn btn-primary">Update</a>
+			  {% endif %}
+			</div>
+			<div class="card-footer text-muted">
+			  Posted on {{blog_post.date_published}} by {{blog_post.author}}
+			</div>
+			
+			{% if visible %}
+			<form class="create-comment" method="POST" enctype="multipart/form-data">{% csrf_token %}
+				<div class="form-group">
+					<label for="id_body">Comment</label>
+					<textarea class="form-control" rows="10" type="text" name="body" id="id_body" placeholder="Write your thoughts..." required></textarea>
+				</div>
+
+				<button class="submit-button btn btn-lg btn-primary btn-block" type="submit">POST</button>
+			</form>
+			{% endif %}
+
+			{% for comm in comments %}
+				<!-- <h5 class="card-title">{{comm.body}}</h2>
+				{% if user == comm.author.username%}
+					<a href="{% url 'blog:editcomment' comm.id%}">Edit</a>
+				{% endif %}
+				<p>upvote - {{comm.upvote}}</p>
+				<p>downvote - {{comm.downvote}}</p>
+				<p>Posted By {{comm.author.username}}</p>
+				<p>Posted on {{comm.date_published}}</p> -->
+				<div class="ui fluid card">
+					<div class="content" >
+						<a class="item">
+							<div class="ui horizontal label">
+									<a href="{% url 'profile' comm.author.username %}">{{comm.author.username}}</a>								
+							</div>
+						</a>
+						<button class="ui compact button" data-tooltip="{{comm.date_published}}" data-position="right center">
+							<i class="info icon"></i>
+						</button>
+						{% if user == comm.author.username%}
+							<a href="{% url 'blog:editcomment' comm.id%}">Edit</a>
+						{% endif %}
+					</div>
+					<div class="content">
+						<h5 class="card-title">{{comm.body}}</h5>
+					</div>
+					<div class="content">
+						<div class="ui buttons" id="vote">
+							<div class="ui vertical animated button" tabindex="0">
+								<div class="visible content">
+									<i class="angle up icon"></i>	
+								</div>
+								<div class="hidden content">
+									  <i class="angle double up icon"></i>
+								</div>
+							</div>
+							<div class="or" data-text={{comm.count_vote}}></div>
+							<div class="ui vertical animated button" tabindex="0">
+								<div class="visible content">
+									<i class="angle down icon"></i>	
+								</div>
+								<div class="hidden content">
+									  <i class="angle double down icon"></i>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+
+		
+	</div>
+</div>
+
+	
+
+{% endblock content %}
