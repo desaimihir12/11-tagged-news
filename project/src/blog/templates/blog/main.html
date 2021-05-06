@@ -65,7 +65,9 @@
 				<div class="ui fluid card">
 					<div class="content">
 						<a class="item">
-						    <div class="ui horizontal label">{{obj.author.username}}</div>
+						    <div class="ui horizontal label">
+								<a href="{% url 'profile' obj.author.username %}">{{obj.author.username}}</a>
+							</div>
 							<a href="{% url 'blog:detail' obj.slug %}" style="text-decoration: none">{{obj.title}}</a>
 						</a>
 					</div>

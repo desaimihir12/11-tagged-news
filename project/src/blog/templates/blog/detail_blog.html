@@ -52,7 +52,7 @@
 					<div class="content" >
 						<a class="item">
 							<div class="ui horizontal label">
-								<h5 class="card-title">{{comm.author.username}}</h5>
+									<a href="{% url 'profile' comm.author.username %}">{{comm.author.username}}</a>								
 							</div>
 						</a>
 						<button class="ui compact button" data-tooltip="{{comm.date_published}}" data-position="right center">

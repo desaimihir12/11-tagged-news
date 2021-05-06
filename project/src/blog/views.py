@@ -5,11 +5,11 @@ from .forms import CreateCommentForm, UpdateCommentForm, CreateBlogPostForm
 from account.models import Account
 # Create your views here.
 def post_view(request):
-	qs=blog.objects.all()
-
+	qs=blog.objects.all().order_by('-date_updated',)
 	context = {
 	 'qs' : qs,
 	}
+
 	return render(request, 'blog/main.html', context)
 
 def detail_blog_view(request, slug):
@@ -17,7 +17,7 @@ def detail_blog_view(request, slug):
 	context = {}
 	blog_post = get_object_or_404(blog, slug=slug)
 
-	comments = Comment.objects.filter(blog=blog_post)
+	comments = Comment.objects.filter(blog=blog_post).order_by('-date_updated')
 	context['blog_post'] = blog_post
 	context['comments'] = comments
 	context['visible'] = True
