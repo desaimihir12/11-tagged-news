@@ -16,6 +16,18 @@
 		width: 200% !important;
 		height: 200% !important;
 	}
+	#vote
+	{
+		/* width : 100%; */
+	}
+	#share
+	{
+		/* width:50% ; */
+	}
+	#comment
+	{
+		/* width:49% ; */
+	}
 </style>
 <script>
 	// $(document).ready(function(){
@@ -53,25 +65,85 @@
 				<div class="ui fluid card">
 					<div class="content">
 						<a class="item">
-						    <div class="ui horizontal label">{{obj.author.username}}</div>
-							<a href="{% url 'blog:detail' obj.slug %}" style="text-decoration: none">{{obj.title}}</a>
+						    <div class="ui horizontal label">
+								<a href="{% url 'profile' obj.post.author.username %}">{{obj.post.author.username}}</a>
+							</div>
+							<a href="{% url 'blog:detail' obj.post.slug %}" style="text-decoration: none">{{obj.post.title}}</a>
 						</a>
 					</div>
 					<div class="content">
-						{{obj.body}}
+						{{obj.post.body}}
 					</div>	
-					<!-- <div class="ui small image">
-					  <img src="https://picsum.photos/200">
-					  <img src={{obj.image.url}}>
-					</div> -->
+
 					<div class="ui segment">
-						<img class="ui centered medium image", src={{obj.image.url}}>
+						<img class="ui centered medium image", src={{obj.post.image.url}}>
 					</div>
 					<div class="content">
-						{{obj.count_vote}}
-						&nbsp;
-						<button class="ui primary button">↑</button>
-						<button class="ui primary button">↓</button>
+						<div class="all-buttons">
+							<!-- show votes,upvote and downvote -->
+							<form action="{% url 'blog:post_like' pk=obj.post.pk option='U' %}" method="POST">
+								{% csrf_token %}
+								<button type="submit", name="post_id", value="{{obj.post.id}}"> 
+									{% if not obj.liked %}
+										Like
+									{% elif obj.type %}
+										Liked
+									{% else %}
+										Like
+									{% endif %}
+								</button>
+							</form>
+							<form action="{% url 'blog:post_like' pk=obj.post.pk option='D' %}" method="POST">
+								{% csrf_token %}
+								<button type="submit", name="post_id", value="{{obj.post.id}}">
+								{% if not obj.liked %}
+									DisLike
+								{% elif not obj.type %}
+									DisLiked
+								{% else %}
+									Dislike
+								{% endif %}
+								</button>
+							</form>
+							<div class="ui buttons" id="vote">
+								<div class="ui vertical animated button" tabindex="0">
+									<div class="visible content">
+										<i class="angle up icon"></i>
+									</div>
+									<div class="hidden content">
+										  <i class="angle double up icon"></i>
+									</div>
+								</div>
+								
+								<div class="or" data-text={{obj.post.count_vote}}></div>
+								<div class="ui vertical animated button" tabindex="0">
+									<div class="visible content">
+										<i class="angle down icon"></i>	
+									</div>
+									<div class="hidden content">
+										  <i class="angle double down icon"></i>
+									</div>
+								</div>
+							</div>
+							<div class="ui vertical animated button" tabindex="0" onclick="pmodal()">
+								<div class="visible content">
+									<i class="share icon"></i>	
+								</div>
+								<div class="hidden content">
+										Share
+								</div>
+							</div>
+							<a href="{% url 'blog:detail' obj.post.slug %}" class="ui vertical animated button" tabindex="0"> 
+								<div class="visible content">
+									<i class="comments icon"></i>	
+								</div>
+								<div class="hidden content">
+									Comment
+								</div>
+							</a>
+							
+							
+						</div>
 					</div>
 
 				</div>
