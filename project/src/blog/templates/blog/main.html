@@ -80,59 +80,47 @@
 					</div>
 					<div class="content">
 						<div class="all-buttons">
+							<div class="ui buttons" id="vote">
 							<!-- show votes,upvote and downvote -->
 							<form action="{% url 'blog:post_like' pk=obj.post.pk option='U' %}" method="POST">
 								{% csrf_token %}
-								<button type="submit", name="post_id", value="{{obj.post.id}}"> 
+								<div type="submit", name="post_id", value="{{obj.post.id}}"> 
 									{% if not obj.liked %}
-										Like
+										<button class="ui icon button">
+											<i class="angle up icon"></i>
+									  	</button>
 									{% elif obj.type %}
-										Liked
+										<button class="ui disabled icon button">
+											<i class="angle double up icon"></i>
+									  	</button>
 									{% else %}
-										Like
+										<button class="ui icon button">
+											<i class="angle up icon"></i>
+									  	</button>
 									{% endif %}
-								</button>
-							</form>
-							<form action="{% url 'blog:post_like' pk=obj.post.pk option='D' %}" method="POST">
-								{% csrf_token %}
-								<button type="submit", name="post_id", value="{{obj.post.id}}">
-								{% if not obj.liked %}
-									DisLike
-								{% elif not obj.type %}
-									DisLiked
-								{% else %}
-									Dislike
-								{% endif %}
-								</button>
+									</div>
 							</form>
 							<div class="ui buttons" id="vote">
-								<div class="ui vertical animated button" tabindex="0">
-									<div class="visible content">
-										<i class="angle up icon"></i>
-									</div>
-									<div class="hidden content">
-										  <i class="angle double up icon"></i>
-									</div>
-								</div>
-								
 								<div class="or" data-text={{obj.post.count_vote}}></div>
-								<div class="ui vertical animated button" tabindex="0">
-									<div class="visible content">
-										<i class="angle down icon"></i>	
-									</div>
-									<div class="hidden content">
-										  <i class="angle double down icon"></i>
-									</div>
-								</div>
 							</div>
-							<div class="ui vertical animated button" tabindex="0" onclick="pmodal()">
-								<div class="visible content">
-									<i class="share icon"></i>	
+							<form action="{% url 'blog:post_like' pk=obj.post.pk option='D' %}" method="POST">
+								{% csrf_token %}
+								<div type="submit", name="post_id", value="{{obj.post.id}}">
+								{% if not obj.liked %}
+									<button class="ui icon button">
+										<i class="angle down icon"></i>
+								  	</button>
+								{% elif not obj.type %}
+									<button class="ui disabled icon button">
+									<i class="angle double down icon"></i>
+								  </button>
+								{% else %}
+									<button class="ui icon button">
+										<i class="angle down icon"></i>
+								  	</button>
+								{% endif %}
 								</div>
-								<div class="hidden content">
-										Share
-								</div>
-							</div>
+							</form>
 							<a href="{% url 'blog:detail' obj.post.slug %}" class="ui vertical animated button" tabindex="0"> 
 								<div class="visible content">
 									<i class="comments icon"></i>	
@@ -140,12 +128,9 @@
 								<div class="hidden content">
 									Comment
 								</div>
-							</a>
-							
-							
+							</a>	
 						</div>
 					</div>
-
 				</div>
 				{% endfor %}
 			</div>
