@@ -37,6 +37,7 @@
 
 	<h2 class="account-heading">{{ user.username }}</h2>
 	<h2 class="account-heading">{{ user.email }}</h2>
+	<h2 class="account-heading">{{ karma }}</h2>
 	{% if request.user == user %}
 		<a href="{% url 'editprofile' user.username%}">Edit Profile</a>
 	{% endif %}
