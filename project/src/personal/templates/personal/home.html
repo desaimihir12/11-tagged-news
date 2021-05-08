@@ -2,9 +2,43 @@
 
 
 {% block content %}
-    <h3>Registered Users:</h3>
-    {% for account in accounts %}
-        <p>{{account}}</p>
-    {% endfor %}
+
+
+{% load static %}
+
+<!-- <style>
+  
+.container{
+    margin: 0%;
+}
+
+.image{
+    
+    object-fit:contain;
+} -->
+
+<style>
+body {
+  background-color: #4CC5E5;
+  background-image: url("{% static '/home.png' %}");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  margin:0%;
+
+}
+</style>
+
+
+  
+<!-- </style> -->
+
+<!-- <body>
+  <div class="container">
+ 
+        {% load static %}
+        <img src="{% static '/home.png' %}" class="image"  alt="Image">
+  </div>
+</body> -->
+
 
 {% endblock content %}
