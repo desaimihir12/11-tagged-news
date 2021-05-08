@@ -110,32 +110,6 @@
 						<div class="all-buttons">
 							<!-- show votes,upvote and downvote -->
 							<div class="ui buttons" id="vote">
-								<div class="ui vertical animated button" tabindex="0">
-									<div class="visible content">
-										<i class="angle up icon"></i>	
-									</div>
-									<div class="hidden content">
-										  <i class="angle double up icon"></i>
-									</div>
-								</div>
-								<div class="or" data-text={{blog.count_vote}}></div>
-								<div class="ui vertical animated button" tabindex="0">
-									<div class="visible content">
-										<i class="angle down icon"></i>	
-									</div>
-									<div class="hidden content">
-										  <i class="angle double down icon"></i>
-									</div>
-								</div>
-							</div>
-							<div class="ui vertical animated button" tabindex="0" onclick="pmodal()">
-								<div class="visible content">
-									<i class="share icon"></i>	
-								</div>
-								<div class="hidden content">
-										Share
-								</div>
-							</div>
 							<a href="{% url 'blog:detail' blog.slug %}" class="ui vertical animated button" tabindex="0"> 
 								<div class="visible content">
 									<i class="comments icon"></i>	
