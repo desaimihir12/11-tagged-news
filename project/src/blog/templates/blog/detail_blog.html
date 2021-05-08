@@ -21,7 +21,7 @@
 			  <h2 class="card-title">{{blog_post.title}}</h2>
 			  <p class="card-text">{{blog_post.body|safe}}</p>
 			  {% if blog_post.author == request.user %}
-			  	<a href="#" class="btn btn-primary">Update</a>
+			  	<a href="{% url 'blog:editpost' blog_post.id %}" >Update</a>
 			  {% endif %}
 			</div>
 			<div class="card-footer text-muted">
