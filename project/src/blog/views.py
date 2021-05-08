@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import BlogPost as blog
 from .models import Comment, PostVote, CommentVote
-from .forms import CreateCommentForm, UpdateCommentForm, CreateBlogPostForm
+from .forms import CreateCommentForm, UpdateCommentForm, CreateBlogPostForm, UpdateBlogPostForm
 from account.models import Account
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -141,6 +141,43 @@ def create_blog_view(request):
 	context['form'] = form
 
 	return render(request, 'blog/create_post_form.html', context)
+
+def update_post_view(request, id):
+
+	if not request.user.is_authenticated:
+		return redirect("blog")
+
+	pos = get_object_or_404(blog, id=id)
+	context = {}
+	form = UpdateBlogPostForm()
+	if request.POST:
+		form = UpdateBlogPostForm(request.POST or None, request.FILES or None, instance=pos)
+		#if form.is_valid():
+		#	form.initial = {
+		#		"title":request.POST['title'],
+		#		"body":request.POST['body'],
+		#		"image":request.POST['image']
+		#	}
+		#	form.save()
+		if form.is_valid():
+			obj = form.save(commit=False)
+			obj.save()
+			context['success_message'] = "Updated"
+			user = obj
+			return redirect('/blog1/' + pos.slug)
+
+	else:
+		form = UpdateCommentForm(
+			initial={
+				'title':pos.title,
+				'body':pos.body,
+				'image':pos.image
+			}
+		)
+		print(pos.body)
+
+	context['form'] = form
+	return render(request, "blog/update_post_form.html", context)
 
 def post_like_view(request, pk, option):
 
