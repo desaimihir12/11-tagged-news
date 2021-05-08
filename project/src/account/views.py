@@ -3,6 +3,7 @@ from django.contrib.auth import login, authenticate, logout
 from account.forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateForm
 from account.models import Account
 from blog.models import BlogPost
+
 def registration_view(request):
 	context = {}
 	if request.POST:
@@ -88,8 +89,13 @@ def profile_view(request, username):
 	context = {}
 	context['user'] = user
 
+	karma_points = 0
 	blog_posts = BlogPost.objects.filter(author=user)
+	for blog in blog_posts:
+		karma_points += blog.count_vote()
+	
 	context['blogs'] = blog_posts
+	context['karma'] = karma_points
 	return render(request, "account/profile.html", context)
 
 def edit_profile_view(request, username):
