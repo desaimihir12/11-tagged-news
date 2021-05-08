@@ -131,12 +131,15 @@ def create_blog_view(request):
 		return redirect('login')
 
 	form = CreateBlogPostForm(request.POST or None, request.FILES or None)
-	if form.is_valid():
-		obj = form.save(commit=False)
-		author = Account.objects.filter(email=request.user.email).first()
-		obj.author = author
-		obj.save()
-		form = CreateBlogPostForm()
+	if request.POST:
+		form = CreateBlogPostForm(request.POST or None, request.FILES or None)
+		if form.is_valid():
+			obj = form.save(commit=False)
+			author = Account.objects.filter(email=request.user.email).first()
+			obj.author = author
+			obj.save()
+			form = CreateBlogPostForm()
+			return redirect('/blog/')
 
 	context['form'] = form
 

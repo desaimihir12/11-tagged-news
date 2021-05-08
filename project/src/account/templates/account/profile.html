@@ -4,6 +4,9 @@
 {% block content %}
 
 <style>
+	body{
+		background: #77A6F7;
+	}
 	.all_posts{
 		   margin-left: 30%;
 	}
@@ -18,6 +21,37 @@
 		width: 200% !important;
 		height: 200% !important;
 	}
+
+	.account-img{
+		display: block;
+		margin:auto;
+	}
+
+	h2{	
+		padding-top: 5px;
+		text-align: center;
+		font-size: 25px;
+		color: #FFFFFF;
+	}
+
+	.submit-button{
+		background: #FF4500;
+  		border-color: #FF4500;
+		width:300px;
+		margin:auto;
+		border-radius: 1.5rem;
+		margin-bottom: 15px;
+	}
+
+	.card{
+		max-width: 700px;
+		border-radius: 0.9rem;
+		margin-bottom: 30px;
+	}
+
+	.profile:hover{
+		text-decoration: none;
+	}
 	#vote
 	{
 		/* width : 100%; */
@@ -30,17 +64,30 @@
 	{
 		/* width:49% ; */
 	}
+
+	all_posts{
+		margin-left: 30%;
+	}
 </style>
 
 <body>
-    <img class="rounded-circle account-img" src="{{user.avatar.url}}" height="100" width="100">
+    <img class="rounded-circle account-img" src="{{user.avatar.url}}" height="150" width="150">
 
-	<h2 class="account-heading">{{ user.username }}</h2>
-	<h2 class="account-heading">{{ user.email }}</h2>
-	<h2 class="account-heading">{{ karma }}</h2>
+	<h2 class="account-heading"><b>Username: {{ user.username }}</b></h2>
+	<h2 class="account-heading"><b>Email: {{ user.email }}</b></h2>
+	<h2 class="account-heading"><b>Karma Points: {{ karma }}</b></h2>
 	{% if request.user == user %}
-		<a href="{% url 'editprofile' user.username%}">Edit Profile</a>
+		
+			<a class="profile" href="{% url 'editprofile' user.username%}">
+				<button class="submit-button btn btn-lg btn-primary btn-block" type="submit">Edit Profile</button>
+			</a>
+		
+		
 	{% endif %}
+	<div class="all_posts">
+	<div class="ui grid">
+		<div class = "row">
+			<div class = "ten wide column">
     {% for blog in blogs%}
 				<div class="ui fluid card">
 					<div class="content">
@@ -103,7 +150,13 @@
 					</div>
 
 				</div>
+		
 				{% endfor %}
+		</div>
+		</div>
+		</div>
+		</div>
+	
 </body>
 
 {% endblock content %}
