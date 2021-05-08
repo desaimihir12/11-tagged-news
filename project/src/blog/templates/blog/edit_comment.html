@@ -3,13 +3,40 @@
 
 {% block content %}
 <style type="text/css">
+
+	body{
+		background: #77A6F7;
+	}
 	.card{
-		max-width: 700px;
+		width: 700px;
+		border-radius: 0.9rem;
 	}
 	.container{
 		padding:20px;
 	}
+	label{
+		font-size: 18px;
+		margin-left: 10px;
+		margin-top:10px;
+	}
+
+	.form-control{
+		border-radius: 0.9rem;
+	}
+
+	
+	.submit-button{
+	background: #FF4500;
+  	border-color: #FF4500;
+	width:300px;
+	margin:auto;
+	margin-bottom:15px;
+	}
 </style>
+
+<body>
+
+
 
 <div class="container">
 	<div class="row">
@@ -22,13 +49,15 @@
 					<textarea class="form-control" rows="10" type="text" name="body" id="id_body" >{{form.initial.body}}</textarea>
 				</div>
 
-				<button class="submit-button btn btn-lg btn-primary btn-block" type="submit">Update</button>
+				<button class="submit-button btn btn-lg btn-primary btn-block" type="submit">Edit</button>
 			</form>			
 		</div>
 
 		
 	</div>
 </div>
+
+</body>
 
 	
 

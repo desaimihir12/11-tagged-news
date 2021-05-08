@@ -3,13 +3,42 @@
 
 {% block content %}
 <style type="text/css">
+
+	body{
+		background: #77A6F7;
+	}
 	.card{
 		max-width: 700px;
+		border-radius: 0.9rem;
 	}
 	.container{
 		padding:20px;
 	}
+
+	.submit-button{
+	background: #FF4500;
+  	border-color: #FF4500;
+	width:300px;
+	margin:auto;
+	margin-bottom:15px;
+	}
+
+	label{
+		font-size: 20px;
+		margin-left:18px;
+	}
+
+	.form-control{
+		border-radius: 0.9rem;
+	}
+
+	
+
 </style>
+
+<body>
+
+
 
 <div class="container">
 	<div class="row">
@@ -21,7 +50,7 @@
 			  <h2 class="card-title">{{blog_post.title}}</h2>
 			  <p class="card-text">{{blog_post.body|safe}}</p>
 			  {% if blog_post.author == request.user %}
-			  	<a href="{% url 'blog:editpost' blog_post.id %}" >Update</a>
+			  	<a href="{% url 'blog:editpost' blog_post.id %}" >Edit</a>
 			  {% endif %}
 			</div>
 			<div class="card-footer text-muted">
@@ -35,7 +64,7 @@
 					<textarea class="form-control" rows="10" type="text" name="body" id="id_body" placeholder="Write your thoughts..." required></textarea>
 				</div>
 
-				<button class="submit-button btn btn-lg btn-primary btn-block" type="submit">POST</button>
+				<button class="submit-button btn btn-lg btn-primary btn-block" type="submit">Post</button>
 			</form>
 			{% endif %}
 
@@ -159,6 +188,6 @@
 	</div>
 </div>
 
-	
+</body>
 
 {% endblock content %}
