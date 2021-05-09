@@ -2,6 +2,10 @@
 {% load static %}
 {% block content %}
 <style>
+
+	body{
+		background: #77A6F7;
+	}
 	.all_posts{
 		   margin-left: 30%;
 	}
@@ -27,6 +31,34 @@
 	#comment
 	{
 		/* width:49% ; */
+	}
+	.form_url{
+		width:auto;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.ui.vertical.animated.button{
+		margin-left:20px;
+		border-radius:0.9rem;
+		background-color: #77A6F7;
+	}
+
+	.angle.double.up.icon{
+		color:rgb(33, 253, 33);
+	}
+
+	.angle.double.down.icon{
+		color:rgb(255, 0, 0);
+	}
+
+	.comments.icon{
+		color:rgb(255, 255, 255);
+	}
+
+	.ui.icon.button{
+		background-color: #ffffff;
 	}
 </style>
 <script>
@@ -57,104 +89,101 @@
 	// 	});
 	// });
 	</script>
+
+<body>
 <div class="all_posts">
 	<div class="ui grid">
+		{% for obj in qs%}
+
 		<div class = "row">
 			<div class = "ten wide column">
-				{% for obj in qs%}
 				<div class="ui fluid card">
 					<div class="content">
 						<a class="item">
 						    <div class="ui horizontal label">
-								<a href="{% url 'profile' obj.author.username %}">{{obj.author.username}}</a>
+								<a href="{% url 'profile' obj.post.author.username %}">{{obj.post.author.username}}</a>
 							</div>
-							<a href="{% url 'blog:detail' obj.slug %}" style="text-decoration: none">{{obj.title}}</a>
+							<a href="{% url 'blog:detail' obj.post.slug %}" style="text-decoration: none">{{obj.post.title}}</a>
 						</a>
 					</div>
+					{% if obj.post.form_url %}
 					<div class="content">
-						{{obj.body}}
-					</div>	
-					<!-- <div class="ui small image">
-					  <img src="https://picsum.photos/200">
-					  <img src={{obj.image.url}}>
-					</div> -->
-					<div class="ui segment">
-						<img class="ui centered medium image", src={{obj.image.url}}>
+						<div class="form_url">
+							<a href="{{obj.post.form_url}}">{{obj.post.form_url}}</a>
+						</div>
 					</div>
+					{% endif %}
+
+					<div class="content">
+						{{obj.post.body}}
+					</div>	
+					{% if obj.post.image %}
+					<div class="ui segment">
+						<img class="ui centered medium image", src={{obj.post.image.url}}>
+					</div>
+					{% endif %}
 					<div class="content">
 						<div class="all-buttons">
-							<!-- show votes,upvote and downvote -->
 							<div class="ui buttons" id="vote">
-								<div class="ui vertical animated button" tabindex="0">
-									<div class="visible content">
-										<i class="angle up icon"></i>	
+							<!-- show votes,upvote and downvote -->
+							<form action="{% url 'blog:post_like' pk=obj.post.pk option='U' %}" method="POST">
+								{% csrf_token %}
+								<div type="submit", name="post_id", value="{{obj.post.id}}"> 
+									{% if not obj.liked %}
+										<button class="ui icon button">
+											<i class="angle up icon"></i>
+									  	</button>
+									{% elif obj.type %}
+										<button class="ui icon button">
+											<i class="angle double up icon"></i>
+									  	</button>
+									{% else %}
+										<button class="ui icon button">
+											<i class="angle up icon"></i>
+									  	</button>
+									{% endif %}
 									</div>
-									<div class="hidden content">
-										  <i class="angle double up icon"></i>
-									</div>
-								</div>
-								<div class="or" data-text={{obj.count_vote}}></div>
-								<div class="ui vertical animated button" tabindex="0">
-									<div class="visible content">
-										<i class="angle down icon"></i>	
-									</div>
-									<div class="hidden content">
-										  <i class="angle double down icon"></i>
-									</div>
-								</div>
+							</form>
+							<div class="ui buttons" id="vote">
+								<div class="or" data-text={{obj.post.count_vote}}></div>
 							</div>
-							<div class="ui vertical animated button" tabindex="0" onclick="pmodal()">
-								<div class="visible content">
-									<i class="share icon"></i>	
+							<form action="{% url 'blog:post_like' pk=obj.post.pk option='D' %}" method="POST">
+								{% csrf_token %}
+								<div type="submit", name="post_id", value="{{obj.post.id}}">
+								{% if not obj.liked %}
+									<button class="ui icon button">
+										<i class="angle down icon"></i>
+								  	</button>
+								{% elif not obj.type %}
+									<button class="ui icon button">
+									<i class="angle double down icon"></i>
+								  </button>
+								{% else %}
+									<button class="ui icon button">
+										<i class="angle down icon"></i>
+								  	</button>
+								{% endif %}
 								</div>
-								<div class="hidden content">
-										Share
-								</div>
-							</div>
-							<a href="{% url 'blog:detail' obj.slug %}" class="ui vertical animated button" tabindex="0"> 
+							</form>
+							<a href="{% url 'blog:detail' obj.post.slug %}" class="ui vertical animated button" tabindex="0"> 
 								<div class="visible content">
 									<i class="comments icon"></i>	
 								</div>
-								<div class="hidden content">
+								<div style="color :white;" class="hidden content">
 									Comment
 								</div>
-							</a>
-							<!-- share button -->
-							<!-- <div class="ui buttons" id="share">
-								<div class="ui vertical animated button" tabindex="0">
-									<div class="visible content">
-										<i class="share square icon"></i>	
-									</div>
-									<div class="hidden content">
-											Share
-									</div>
-								</div>
-							</div> -->
-							
-							<!-- comments button -->
-							<!-- <div class="ui buttons" id="comment">
-								<a href="{% url 'blog:detail' obj.slug %}">
-									<div class="ui vertical animated button" tabindex="0" >
-										<div class="visible content">
-											<i class="comments icon" href="{% url 'blog:detail' obj.slug %}"></i>	
-										</div>
-										<div class="hidden content">
-											<a href="{% url 'blog:detail' obj.slug %}" style="text-decoration: none">Comment</a>
-										</div>
-									</div>
-								</a>
-							</div> -->
-							
+							</a>	
 						</div>
 					</div>
-
 				</div>
-				{% endfor %}
 			</div>
 			<div class = "six wide column">
 				
 			</div>
 		</div>
 	</div>	
+	{% endfor %}
+
 </div>
+</body>
 {% endblock content %}
