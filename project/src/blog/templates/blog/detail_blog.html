@@ -3,49 +3,100 @@
 
 {% block content %}
 <style type="text/css">
+
+	body{
+		background: #77A6F7;
+	}
 	.card{
 		max-width: 700px;
+		border-radius: 0.9rem;
 	}
 	.container{
 		padding:20px;
 	}
+
+	.submit-button{
+	background: #FF4500;
+  	border-color: #FF4500;
+	width:300px;
+	margin:auto;
+	margin-bottom:15px;
+	}
+
+	label{
+		font-size: 20px;
+		margin-left:18px;
+	}
+
+	.form-control{
+		border-radius: 0.9rem;
+	}
+	.form_url{
+		width: auto;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	
+
 </style>
 
-<div class="container">
-	<div class="row">
+<body>
 
-		<!-- Blog Post -->
-		<div class="card m-auto">
-			<img class="card-img-top" src="{{blog_post.image.url}}">
-			<div class="card-body mt-2 mb-2">
-			  <h2 class="card-title">{{blog_post.title}}</h2>
-			  <p class="card-text">{{blog_post.body|safe}}</p>
-			  {% if blog_post.author == request.user %}
-			  	<a href="{% url 'blog:editpost' blog_post.id %}" >Update</a>
-			  {% endif %}
-			</div>
-			<div class="card-footer text-muted">
-			  Posted on {{blog_post.date_published}} by {{blog_post.author}}
-			</div>
-			
-			{% if visible %}
-			<form class="create-comment" method="POST" enctype="multipart/form-data">{% csrf_token %}
-				<div class="form-group">
-					<label for="id_body">Comment</label>
-					<textarea class="form-control" rows="10" type="text" name="body" id="id_body" placeholder="Write your thoughts..." required></textarea>
+
+
+<div class="container">
+	<div class="ui grid">
+		<div class="row ">
+			<!-- Blog Post -->
+			<div class="card m-auto">
+		
+				{% if blog_post.image %}
+				<img class="card-img-top" src="{{blog_post.image.url}}">
+				{% endif %}
+				<div class="card-body mt-2 mb-2">
+				<h2 class="card-title">{{blog_post.title}}</h2>
+
+				<div class="content">
+				{% if blog_post.form_url %}
+				<div class="form_url">
+					<a href="{{blog_post.form_url}}" >{{blog_post.form_url}}</a>
+				</div>
+				<br>
+				{% endif %}
 				</div>
 
-				<button class="submit-button btn btn-lg btn-primary btn-block" type="submit">POST</button>
-			</form>
-			{% endif %}
-
-			{% for comm in comments %}
+				<p class="card-text">{{blog_post.body}}</p>
+				{% if blog_post.author == request.user %}
+					<a href="{% url 'blog:editpost' blog_post.id %}" >Edit</a>
+				{% endif %}
+				</div>
+				<div class="card-footer text-muted">
+				Posted on {{blog_post.date_published}} by {{blog_post.author}}
+				</div>
 				
-				<div class="ui fluid card">
+				{% if visible %}
+				<form class="create-comment" method="POST" enctype="multipart/form-data">{% csrf_token %}
+					<div class="form-group">
+						<label for="id_body">Comment</label>
+						<textarea class="form-control" rows="10" type="text" name="body" id="id_body" placeholder="Write your thoughts..." required></textarea>
+					</div>
+
+					<button class="submit-button btn btn-lg btn-primary btn-block" type="submit">Post</button>
+				</form>
+				{% endif %}
+			</div>
+		</div>
+
+		{% for comm in comments %}
+		<div class="row">
+			<div class=" m-auto ten wide column">
+				<div class="ui fluid card ">
 					<div class="content" >
 						<a class="item">
 							<div class="ui horizontal label">
-									<a href="{% url 'profile' comm.comment.author.username %}">{{comm.comment.author.username}}</a>								
+								<a href="{% url 'profile' comm.comment.author.username %}">{{comm.comment.author.username}}</a>								
 							</div>
 						</a>
 						<button class="ui compact button" data-tooltip="{{comm.comment.date_published}}" data-position="right center">
@@ -59,60 +110,59 @@
 						<h5 class="card-title">{{comm.comment.body}}</h5>
 					</div>
 
-					<form action="{% url 'blog:comment_like' pk=comm.comment.pk option='U' %}" method="POST">
-						{% csrf_token %}
-						<button type="submit", name="comment_id", value="{{comm.comment.id}}">
-							{% if not comm.liked %}
-								Like
-							{% elif comm.type %}
-								Liked
-							{% else %}
-								Like
-							{% endif %}
-						</button>
-					</form>
-					<form action="{% url 'blog:comment_like' pk=comm.comment.pk option='D' %}" method="POST">
-						{% csrf_token %}
-						<button type="submit", name="comment_id", value="{{comm.comment.id}}">
-						{% if not comm.liked %}
-							DisLike
-						{% elif not comm.type %}
-							DisLiked
-						{% else %}
-							Dislike
-						{% endif %}						
-						</button>
-					</form>
-
 					<div class="content">
-						<div class="ui buttons" id="vote">
-							<div class="ui vertical animated button" tabindex="0">
-								<div class="visible content">
-									<i class="angle up icon"></i>	
+						<div class="all-buttons">
+							<div class="ui buttons" id="vote">
+								<!-- show votes,upvote and downvote -->
+								<form action="{% url 'blog:comment_like' pk=comm.comment.pk option='U' %}" method="POST">
+									{% csrf_token %}
+									<div type="submit", name="comment_id", value="{{comm.comment_id}}"> 
+										{% if not comm.liked %}
+											<button class="ui icon button">
+												<i class="angle up icon"></i>
+											</button>
+										{% elif comm.type %}
+											<button class="ui icon button">
+												<i class="angle double up icon"></i>
+											</button>
+										{% else %}
+											<button class="ui icon button">
+												<i class="angle up icon"></i>
+											</button>
+										{% endif %}
+										</div>
+								</form>
+								<div class="ui buttons" id="vote">
+									<div class="or" data-text={{comm.comment.count_vote}}></div>
 								</div>
-								<div class="hidden content">
-									  <i class="angle double up icon"></i>
-								</div>
-							</div>
-							<div class="or" data-text={{comm.comment.count_vote}}></div>
-							<div class="ui vertical animated button" tabindex="0">
-								<div class="visible content">
-									<i class="angle down icon"></i>	
-								</div>
-								<div class="hidden content">
-									  <i class="angle double down icon"></i>
-								</div>
+								<form action="{% url 'blog:comment_like' pk=comm.comment.pk option='D' %}" method="POST">
+									{% csrf_token %}
+									<div type="submit", name="comment_id", value="{{comm.comment_id}}">
+									{% if not comm.liked %}
+										<button class="ui icon button">
+											<i class="angle down icon"></i>
+										</button>
+									{% elif not comm.type %}
+										<button class="ui icon button">
+										<i class="angle double down icon"></i>
+									</button>
+									{% else %}
+										<button class="ui icon button">
+											<i class="angle down icon"></i>
+										</button>
+									{% endif %}
+									</div>
+								</form>	
 							</div>
 						</div>
 					</div>
 				</div>
-			{% endfor %}
 		</div>
-
-		
+		</div>
+		{% endfor %}
 	</div>
 </div>
 
-	
+</body>
 
 {% endblock content %}

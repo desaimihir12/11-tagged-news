@@ -7,7 +7,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 # Create your views here.
 def post_view(request):
-	qs=blog.objects.all().order_by('-date_updated',)
+
+	qs = blog.objects.all().order_by('-date_updated',)
 	context = {
 	 'qs' : qs,
 	}
@@ -44,6 +45,28 @@ def detail_blog_view(request, slug):
 	context = {}
 	blog_post = get_object_or_404(blog, slug=slug)
 
+
+
+
+	context['visible'] = True
+
+	user = request.user
+
+	if not user.is_authenticated:
+		context['visible'] = False
+	
+	context['user'] = user.username
+
+	form = CreateCommentForm(request.POST or None, request.FILES or None)
+	if form.is_valid():
+		obj = form.save(commit=False)
+		obj.blog = blog_post
+		obj.author = user
+		obj.save()
+		form = CreateCommentForm()
+	context['form'] = form
+
+	
 	comments = Comment.objects.filter(blog=blog_post).order_by('-date_updated')
 	context['blog_post'] = blog_post
 	context['comments'] = []
@@ -74,24 +97,6 @@ def detail_blog_view(request, slug):
 			context['comments'].append(obj)
 
 
-	context['visible'] = True
-
-	user = request.user
-
-	if not user.is_authenticated:
-		context['visible'] = False
-	
-	context['user'] = user.username
-
-	form = CreateCommentForm(request.POST or None, request.FILES or None)
-	if form.is_valid():
-		obj = form.save(commit=False)
-		obj.blog = blog_post
-		obj.author = user
-		obj.save()
-		form = CreateCommentForm()
-	context['form'] = form
-
 	return render(request, 'blog/detail_blog.html', context)
 
 def update_comment_view(request, id):
@@ -100,6 +105,10 @@ def update_comment_view(request, id):
 		return redirect("blog")
 
 	com = get_object_or_404(Comment, id=id)
+	CommentOwner = get_object_or_404(Account, username=com.author.username)
+	if(request.user != CommentOwner ):
+		return redirect('/blog1/' + com.blog.slug)
+
 	context = {}
 	form = UpdateCommentForm()
 	if request.POST:
@@ -131,12 +140,15 @@ def create_blog_view(request):
 		return redirect('login')
 
 	form = CreateBlogPostForm(request.POST or None, request.FILES or None)
-	if form.is_valid():
-		obj = form.save(commit=False)
-		author = Account.objects.filter(email=request.user.email).first()
-		obj.author = author
-		obj.save()
-		form = CreateBlogPostForm()
+	if request.POST:
+		form = CreateBlogPostForm(request.POST or None, request.FILES or None)
+		if form.is_valid():
+			obj = form.save(commit=False)
+			author = Account.objects.filter(email=request.user.email).first()
+			obj.author = author
+			obj.save()
+			form = CreateBlogPostForm()
+			return redirect('/blog/')
 
 	context['form'] = form
 
@@ -146,8 +158,12 @@ def update_post_view(request, id):
 
 	if not request.user.is_authenticated:
 		return redirect("blog")
-
 	pos = get_object_or_404(blog, id=id)
+
+	PostOwner = get_object_or_404(Account, username=pos.author.username)	
+	if(request.user != PostOwner ):
+		return redirect('/blog1/' + pos.slug)
+		
 	context = {}
 	form = UpdateBlogPostForm()
 	if request.POST:
@@ -163,7 +179,7 @@ def update_post_view(request, id):
 			obj = form.save(commit=False)
 			obj.save()
 			context['success_message'] = "Updated"
-			user = obj
+			pos = obj
 			return redirect('/blog1/' + pos.slug)
 
 	else:
@@ -171,10 +187,10 @@ def update_post_view(request, id):
 			initial={
 				'title':pos.title,
 				'body':pos.body,
-				'image':pos.image
+				'image':pos.image,
+				'form_url':pos.form_url
 			}
 		)
-		print(pos.body)
 
 	context['form'] = form
 	return render(request, "blog/update_post_form.html", context)
