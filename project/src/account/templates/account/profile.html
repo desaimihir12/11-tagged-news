@@ -92,9 +92,10 @@
 	{% endif %}
 	<div class="all_posts">
 	<div class="ui grid">
+		{% for blog in blogs%}
+
 		<div class = "row">
 			<div class = "ten wide column">
-    {% for blog in blogs%}
 				<div class="ui fluid card">
 					<div class="content">
 						<a class="item">
@@ -104,9 +105,12 @@
 					</div>
 
 					{% if blog.form_url %}
-					<div class="form_url">
-						<a href="{{blog.form_url}}">{{blog.form_url}}</a>
+					<div class="content">
+						<div class="form_url">
+							<a href="{{blog.form_url}}">{{blog.form_url}}</a>
+						</div>
 					</div>
+					
 					{% endif %}
 		
 					<div class="content">
@@ -140,10 +144,11 @@
 
 				</div>
 		
-				{% endfor %}
 		</div>
 		</div>
 		</div>
+		{% endfor %}
+
 		</div>
 	
 </body>

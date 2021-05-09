@@ -47,51 +47,56 @@
 
 
 <div class="container">
-	<div class="row">
+	<div class="ui grid">
+		<div class="row ">
+			<!-- Blog Post -->
+			<div class="card m-auto">
+		
+				{% if blog_post.image %}
+				<img class="card-img-top" src="{{blog_post.image.url}}">
+				{% endif %}
+				<div class="card-body mt-2 mb-2">
+				<h2 class="card-title">{{blog_post.title}}</h2>
 
-
-		<!-- Blog Post -->
-		<div class="card m-auto">
-	
-			{% if blog_post.image %}
-			<img class="card-img-top" src="{{blog_post.image.url}}">
-			{% endif %}
-			<div class="card-body mt-2 mb-2">
-			  <h2 class="card-title">{{blog_post.title}}</h2>
-
-			  {% if blog_post.form_url %}
-			<div class="form_url">
-				<a href="{{blog_post.form_url}}" >{{blog_post.form_url}}</a>
-			</div>
-			{% endif %}
-
-			  <p class="card-text">{{blog_post.body}}</p>
-			  {% if blog_post.author == request.user %}
-			  	<a href="{% url 'blog:editpost' blog_post.id %}" >Edit</a>
-			  {% endif %}
-			</div>
-			<div class="card-footer text-muted">
-			  Posted on {{blog_post.date_published}} by {{blog_post.author}}
-			</div>
-			
-			{% if visible %}
-			<form class="create-comment" method="POST" enctype="multipart/form-data">{% csrf_token %}
-				<div class="form-group">
-					<label for="id_body">Comment</label>
-					<textarea class="form-control" rows="10" type="text" name="body" id="id_body" placeholder="Write your thoughts..." required></textarea>
+				<div class="content">
+				{% if blog_post.form_url %}
+				<div class="form_url">
+					<a href="{{blog_post.form_url}}" >{{blog_post.form_url}}</a>
+				</div>
+				<br>
+				{% endif %}
 				</div>
 
-				<button class="submit-button btn btn-lg btn-primary btn-block" type="submit">Post</button>
-			</form>
-			{% endif %}
-
-			{% for comm in comments %}
+				<p class="card-text">{{blog_post.body}}</p>
+				{% if blog_post.author == request.user %}
+					<a href="{% url 'blog:editpost' blog_post.id %}" >Edit</a>
+				{% endif %}
+				</div>
+				<div class="card-footer text-muted">
+				Posted on {{blog_post.date_published}} by {{blog_post.author}}
+				</div>
 				
-				<div class="ui fluid card">
+				{% if visible %}
+				<form class="create-comment" method="POST" enctype="multipart/form-data">{% csrf_token %}
+					<div class="form-group">
+						<label for="id_body">Comment</label>
+						<textarea class="form-control" rows="10" type="text" name="body" id="id_body" placeholder="Write your thoughts..." required></textarea>
+					</div>
+
+					<button class="submit-button btn btn-lg btn-primary btn-block" type="submit">Post</button>
+				</form>
+				{% endif %}
+			</div>
+		</div>
+
+		{% for comm in comments %}
+		<div class="row">
+			<div class=" m-auto ten wide column">
+				<div class="ui fluid card ">
 					<div class="content" >
 						<a class="item">
 							<div class="ui horizontal label">
-									<a href="{% url 'profile' comm.comment.author.username %}">{{comm.comment.author.username}}</a>								
+								<a href="{% url 'profile' comm.comment.author.username %}">{{comm.comment.author.username}}</a>								
 							</div>
 						</a>
 						<button class="ui compact button" data-tooltip="{{comm.comment.date_published}}" data-position="right center">
@@ -104,53 +109,6 @@
 					<div class="content">
 						<h5 class="card-title">{{comm.comment.body}}</h5>
 					</div>
-
-					<!--form action="{% url 'blog:comment_like' pk=comm.comment.pk option='U' %}" method="POST">
-						{% csrf_token %}
-						<button type="submit", name="comment_id", value="{{comm.comment.id}}">
-							{% if not comm.liked %}
-								Like
-							{% elif comm.type %}
-								Liked
-							{% else %}
-								Like
-							{% endif %}
-						</button>
-					</form>
-					<form action="{% url 'blog:comment_like' pk=comm.comment.pk option='D' %}" method="POST">
-						{% csrf_token %}
-						<button type="submit", name="comment_id", value="{{comm.comment.id}}">
-						{% if not comm.liked %}
-							DisLike
-						{% elif not comm.type %}
-							DisLiked
-						{% else %}
-							Dislike
-						{% endif %}						
-						</button>
-					</form>
-
-					<div class="content">
-						<div class="ui buttons" id="vote">
-							<div class="ui vertical animated button" tabindex="0">
-								<div class="visible content">
-									<i class="angle up icon"></i>	
-								</div>
-								<div class="hidden content">
-									  <i class="angle double up icon"></i>
-								</div>
-							</div>
-							<div class="or" data-text={{comm.comment.count_vote}}></div>
-							<div class="ui vertical animated button" tabindex="0">
-								<div class="visible content">
-									<i class="angle down icon"></i>	
-								</div>
-								<div class="hidden content">
-									  <i class="angle double down icon"></i>
-								</div>
-							</div>
-						</div>
-					</div-->
 
 					<div class="content">
 						<div class="all-buttons">
@@ -198,10 +156,10 @@
 							</div>
 						</div>
 					</div>
-			{% endfor %}
+				</div>
 		</div>
-
-		
+		</div>
+		{% endfor %}
 	</div>
 </div>
 
