@@ -3,25 +3,71 @@
 
 {% block content %}
 <style type="text/css">
+
+	body{
+		background: #77A6F7;
+	}
 	.card{
 		max-width: 700px;
+		border-radius: 0.9rem;
 	}
 	.container{
 		padding:20px;
 	}
+
+	.submit-button{
+	background: #FF4500;
+  	border-color: #FF4500;
+	width:300px;
+	margin:auto;
+	margin-bottom:15px;
+	}
+
+	label{
+		font-size: 20px;
+		margin-left:18px;
+	}
+
+	.form-control{
+		border-radius: 0.9rem;
+	}
+	.form_url{
+		width: auto;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	
+
 </style>
+
+<body>
+
+
 
 <div class="container">
 	<div class="row">
 
+
 		<!-- Blog Post -->
 		<div class="card m-auto">
+	
+			{% if blog_post.image %}
 			<img class="card-img-top" src="{{blog_post.image.url}}">
+			{% endif %}
 			<div class="card-body mt-2 mb-2">
 			  <h2 class="card-title">{{blog_post.title}}</h2>
-			  <p class="card-text">{{blog_post.body|safe}}</p>
+
+			  {% if blog_post.form_url %}
+			<div class="form_url">
+				<a href="{{blog_post.form_url}}" >{{blog_post.form_url}}</a>
+			</div>
+			{% endif %}
+
+			  <p class="card-text">{{blog_post.body}}</p>
 			  {% if blog_post.author == request.user %}
-			  	<a href="#" class="btn btn-primary">Update</a>
+			  	<a href="{% url 'blog:editpost' blog_post.id %}" >Edit</a>
 			  {% endif %}
 			</div>
 			<div class="card-footer text-muted">
@@ -35,7 +81,7 @@
 					<textarea class="form-control" rows="10" type="text" name="body" id="id_body" placeholder="Write your thoughts..." required></textarea>
 				</div>
 
-				<button class="submit-button btn btn-lg btn-primary btn-block" type="submit">POST</button>
+				<button class="submit-button btn btn-lg btn-primary btn-block" type="submit">Post</button>
 			</form>
 			{% endif %}
 
@@ -59,7 +105,7 @@
 						<h5 class="card-title">{{comm.comment.body}}</h5>
 					</div>
 
-					<form action="{% url 'blog:comment_like' pk=comm.comment.pk option='U' %}" method="POST">
+					<!--form action="{% url 'blog:comment_like' pk=comm.comment.pk option='U' %}" method="POST">
 						{% csrf_token %}
 						<button type="submit", name="comment_id", value="{{comm.comment.id}}">
 							{% if not comm.liked %}
@@ -104,8 +150,54 @@
 								</div>
 							</div>
 						</div>
+					</div-->
+
+					<div class="content">
+						<div class="all-buttons">
+							<div class="ui buttons" id="vote">
+								<!-- show votes,upvote and downvote -->
+								<form action="{% url 'blog:comment_like' pk=comm.comment.pk option='U' %}" method="POST">
+									{% csrf_token %}
+									<div type="submit", name="comment_id", value="{{comm.comment_id}}"> 
+										{% if not comm.liked %}
+											<button class="ui icon button">
+												<i class="angle up icon"></i>
+											</button>
+										{% elif comm.type %}
+											<button class="ui icon button">
+												<i class="angle double up icon"></i>
+											</button>
+										{% else %}
+											<button class="ui icon button">
+												<i class="angle up icon"></i>
+											</button>
+										{% endif %}
+										</div>
+								</form>
+								<div class="ui buttons" id="vote">
+									<div class="or" data-text={{comm.comment.count_vote}}></div>
+								</div>
+								<form action="{% url 'blog:comment_like' pk=comm.comment.pk option='D' %}" method="POST">
+									{% csrf_token %}
+									<div type="submit", name="comment_id", value="{{comm.comment_id}}">
+									{% if not comm.liked %}
+										<button class="ui icon button">
+											<i class="angle down icon"></i>
+										</button>
+									{% elif not comm.type %}
+										<button class="ui icon button">
+										<i class="angle double down icon"></i>
+									</button>
+									{% else %}
+										<button class="ui icon button">
+											<i class="angle down icon"></i>
+										</button>
+									{% endif %}
+									</div>
+								</form>	
+							</div>
+						</div>
 					</div>
-				</div>
 			{% endfor %}
 		</div>
 
@@ -113,6 +205,6 @@
 	</div>
 </div>
 
-	
+</body>
 
 {% endblock content %}

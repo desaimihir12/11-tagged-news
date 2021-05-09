@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<style type="text/css">
+
+	body{
+		background: #77A6F7;
+	}
+  .create-form {
+	    width: 100%;
+	    max-width: 100%;
+	    padding: 15px;
+	    margin: auto;
+  	}
+
+  	.submit-button{
+  		max-width: 200px;
+  	}
+
+	label{
+		font-size: 20px;
+		color:#FFFFFF;
+	}
+	.form-control{
+		border-radius: 0.9rem;
+	}
+
+	.submit-button{
+		background: #FF4500;
+  		border-color: #FF4500;
+	}
+</style>
+
+<body>
+<div class="container">
+	<div class="row">
+		<div class="col-lg-7 offset-lg-1">
+			<form class="create-form" method="post" enctype="multipart/form-data">{% csrf_token %}
+
+				<!-- title -->
+				<div class="form-group">
+					<label for="id_title">Title</label>
+					<!--input class="form-control" type="text" name="title" id="id_title" placeholder="Title" required autofocus-->
+                    <textarea class="form-control" type="text" name="title" id="id_title" >{{form.initial.title}}</textarea>
+				</div>
+
+				<div class="form-group">
+					<label for="id_url">URL</label>
+                    <input class="form-control" type="url" name="form_url" id="id_url" value={{form.initial.form_url}}></input>
+				</div>
+
+				<!-- Body -->
+				<div class="form-group">
+					<label for="id_body">Content</label>
+					<textarea class="form-control" rows="10" type="text" name="body" id="id_body" placeholder="This blog is about..." required>{{form.initial.body}}</textarea>
+				</div>
+
+				<!-- Image -->
+				<div class="form-group">
+					{% if obj.post.image %}
+					<img src="{{form.initial.image.url}}" id="id_image_display">
+					{% endif %}
+					<label for="id_image">Image</label>
+					<input  type="file" name="image" id="id_image" accept="image/*" >
+				</div>
+
+				<!-- Submit btn -->
+				<button class="submit-button btn btn-lg btn-primary btn-block" type="submit">Edit</button>
+			</form>	
+		</div>
+	</div>
+</div>
+</body>
+
+<script type="text/javascript">
+	document.getElementById('form_group').onclick = function(event) {
+		document.getElementById('id_image').click();
+	};
+
+	function readURL(input) {
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			$('#id_image_display').attr('src', e.target.result)
+		};
+		reader.readAsDataURL(input.files[0]);
+	}
+
+
+  </script>
+
+
+{% endblock content %}
