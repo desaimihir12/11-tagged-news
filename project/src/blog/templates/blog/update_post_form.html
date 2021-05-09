@@ -4,6 +4,10 @@
 {% block content %}
 
 <style type="text/css">
+
+	body{
+		background: #77A6F7;
+	}
   .create-form {
 	    width: 100%;
 	    max-width: 100%;
@@ -14,8 +18,22 @@
   	.submit-button{
   		max-width: 200px;
   	}
+
+	label{
+		font-size: 20px;
+		color:#FFFFFF;
+	}
+	.form-control{
+		border-radius: 0.9rem;
+	}
+
+	.submit-button{
+		background: #FF4500;
+  		border-color: #FF4500;
+	}
 </style>
 
+<body>
 <div class="container">
 	<div class="row">
 		<div class="col-lg-7 offset-lg-1">
@@ -44,11 +62,12 @@
 				</div>
 
 				<!-- Submit btn -->
-				<button class="submit-button btn btn-lg btn-primary btn-block" type="submit">Update</button>
+				<button class="submit-button btn btn-lg btn-primary btn-block" type="submit">Edit</button>
 			</form>	
 		</div>
 	</div>
 </div>
+</body>
 
 <script type="text/javascript">
 	document.getElementById('form_group').onclick = function(event) {

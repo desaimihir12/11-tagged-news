@@ -4,6 +4,10 @@
 {% block content %}
 
 <style type="text/css">
+
+	body{
+		background: #77A6F7;
+	}
   .create-form {
 	    width: 100%;
 	    max-width: 100%;
@@ -14,12 +18,26 @@
   	.submit-button{
   		max-width: 200px;
   	}
+
+	label{
+		font-size: 20px;
+		color:#FFFFFF;
+	}
+	.form-control{
+		border-radius: 0.9rem;
+	}
+
+	.submit-button{
+		background: #FF4500;
+  		border-color: #FF4500;
+	}
 </style>
 
+<body>
 <div class="container">
 	<div class="row">
 		<div class="col-lg-7 offset-lg-1">
-			<form class="create-form" method="post" enctype="multipart/form-data">{% csrf_token %}
+			<form class="create-form" method="post" enctype="multipart/form-data" >{% csrf_token %}
 
 				<!-- title -->
 				<div class="form-group">
@@ -45,6 +63,7 @@
 		</div>
 	</div>
 </div>
+</body>
 
 
 
