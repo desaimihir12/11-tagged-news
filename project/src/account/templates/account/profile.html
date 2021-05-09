@@ -56,9 +56,11 @@
 					  <img src="https://picsum.photos/200">
 					  <img src={{obj.image.url}}>
 					</div> -->
+					{% if blog.image %}
 					<div class="ui segment">
 						<img class="ui centered medium image", src={{blog.image.url}} >
 					</div>
+					{% endif %}
 					<div class="content">
 						<div class="all-buttons">
 							<!-- show votes,upvote and downvote -->

@@ -74,10 +74,11 @@
 					<div class="content">
 						{{obj.post.body}}
 					</div>	
-
+					{% if obj.post.image %}
 					<div class="ui segment">
 						<img class="ui centered medium image", src={{obj.post.image.url}}>
 					</div>
+					{% endif %}
 					<div class="content">
 						<div class="all-buttons">
 							<!-- show votes,upvote and downvote -->

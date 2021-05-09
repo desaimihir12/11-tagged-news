@@ -16,10 +16,12 @@
 
 		<!-- Blog Post -->
 		<div class="card m-auto">
+			{% if blog_post.image %}
 			<img class="card-img-top" src="{{blog_post.image.url}}">
+			{% endif %}
 			<div class="card-body mt-2 mb-2">
 			  <h2 class="card-title">{{blog_post.title}}</h2>
-			  <p class="card-text">{{blog_post.body|safe}}</p>
+			  <p class="card-text">{{blog_post.body}}</p>
 			  {% if blog_post.author == request.user %}
 			  	<a href="{% url 'blog:editpost' blog_post.id %}" >Update</a>
 			  {% endif %}
