@@ -71,9 +71,10 @@
 <body>
 <div class="all_posts">
 	<div class="ui grid">
+		{% for obj in qs%}
+
 		<div class = "row">
 			<div class = "ten wide column">
-				{% for obj in qs%}
 				<div class="ui fluid card">
 					<div class="content">
 						<a class="item">
@@ -84,10 +85,13 @@
 						</a>
 					</div>
 					{% if obj.post.form_url %}
-					<div class="form_url">
-						<a href="{{obj.post.form_url}}">{{obj.post.form_url}}</a>
+					<div class="content">
+						<div class="form_url">
+							<a href="{{obj.post.form_url}}">{{obj.post.form_url}}</a>
+						</div>
 					</div>
 					{% endif %}
+
 					<div class="content">
 						{{obj.post.body}}
 					</div>	
@@ -150,13 +154,14 @@
 						</div>
 					</div>
 				</div>
-				{% endfor %}
 			</div>
 			<div class = "six wide column">
 				
 			</div>
 		</div>
 	</div>	
+	{% endfor %}
+
 </div>
 </body>
 {% endblock content %}
