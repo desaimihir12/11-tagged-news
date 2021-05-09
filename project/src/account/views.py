@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from account.forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateForm
 from account.models import Account
-from blog.models import BlogPost
+from blog.models import BlogPost, PostVote
 
 def registration_view(request):
 	context = {}
@@ -88,13 +88,36 @@ def profile_view(request, username):
 	user = get_object_or_404(Account, username=username)
 	context = {}
 	context['user'] = user
-
+	context['blogs'] = []
 	karma_points = 0
 	blog_posts = BlogPost.objects.filter(author=user)
 	for blog in blog_posts:
 		karma_points += blog.count_vote()
 	
-	context['blogs'] = blog_posts
+	if not request.user.is_authenticated:
+		for posts in blog_posts:
+			obj = {}
+			obj['post'] = posts
+			obj['liked'] = False
+			obj['type'] = False
+			context['blogs'].append(obj)
+	else:
+		user = request.user
+		for posts in blog_posts:
+			obj = {}
+			obj['post'] = posts
+			postlikes = PostVote.objects.filter(parent_post=posts, author=user)
+			if(postlikes.count() == 0):
+				obj['liked'] = False
+			else:
+				obj['liked'] = True
+				if(postlikes[0].vote_type == 'U'):
+					obj['type'] = True
+				else:
+					obj['type'] = False
+			context['blogs'].append(obj)
+	
+
 	context['karma'] = karma_points
 	return render(request, "account/profile.html", context)
 
