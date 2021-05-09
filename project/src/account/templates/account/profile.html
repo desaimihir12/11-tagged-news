@@ -99,37 +99,75 @@
 				<div class="ui fluid card">
 					<div class="content">
 						<a class="item">
-						    <div class="ui horizontal label">{{blog.author.username}}</div>
-							<a href="{% url 'blog:detail' blog.slug %}" style="text-decoration: none">{{blog.title}}</a>
+						    <div class="ui horizontal label">{{blog.post.author.username}}</div>
+							<a href="{% url 'blog:detail' blog.post.slug %}" style="text-decoration: none">{{blog.post.title}}</a>
 						</a>
 					</div>
 
-					{% if blog.form_url %}
+					{% if blog.post.form_url %}
 					<div class="content">
 						<div class="form_url">
-							<a href="{{blog.form_url}}">{{blog.form_url}}</a>
+							<a href="{{blog.post.form_url}}">{{blog.post.form_url}}</a>
 						</div>
 					</div>
 					
 					{% endif %}
 		
 					<div class="content">
-						{{blog.body}}
+						{{blog.post.body}}
 					</div>	
-					<!-- <div class="ui small image">
-					  <img src="https://picsum.photos/200">
-					  <img src={{obj.image.url}}>
-					</div> -->
-					{% if blog.image %}
+
+					{% if blog.post.image %}
 					<div class="ui segment">
-						<img class="ui centered medium image", src={{blog.image.url}} >
+						<img class="ui centered medium image", src={{blog.post.image.url}} >
 					</div>
 					{% endif %}
 					<div class="content">
 						<div class="all-buttons">
 							<!-- show votes,upvote and downvote -->
 							<div class="ui buttons" id="vote">
-							<a href="{% url 'blog:detail' blog.slug %}" class="ui vertical animated button" tabindex="0"> 
+
+							<form action="{% url 'blog:post_like' pk=blog.post.pk option='U' %}" method="POST">
+								{% csrf_token %}
+								<div type="submit", name="post_id", value="{{blog.post.id}}"> 
+									{% if not blog.liked %}
+										<button class="ui icon button">
+											<i class="angle up icon"></i>
+									  	</button>
+									{% elif blog.type %}
+										<button class="ui icon button">
+											<i class="angle double up icon"></i>
+									  	</button>
+									{% else %}
+										<button class="ui icon button">
+											<i class="angle up icon"></i>
+									  	</button>
+									{% endif %}
+									</div>
+							</form>
+							<div class="ui buttons" id="vote">
+								<div class="or" data-text={{blog.post.count_vote}}></div>
+							</div>
+							<form action="{% url 'blog:post_like' pk=blog.post.pk option='D' %}" method="POST">
+								{% csrf_token %}
+								<div type="submit", name="post_id", value="{{blog.post.id}}">
+								{% if not blog.liked %}
+									<button class="ui icon button">
+										<i class="angle down icon"></i>
+								  	</button>
+								{% elif not blog.type %}
+									<button class="ui icon button">
+									<i class="angle double down icon"></i>
+								  </button>
+								{% else %}
+									<button class="ui icon button">
+										<i class="angle down icon"></i>
+								  	</button>
+								{% endif %}
+								</div>
+							</form>
+							<div class="ui buttons" id="vote">
+							<a href="{% url 'blog:detail' blog.post.slug %}" class="ui vertical animated button" tabindex="0"> 
 								<div class="visible content">
 									<i class="comments icon"></i>	
 								</div>
@@ -141,7 +179,7 @@
 							
 						</div>
 					</div>
-
+					</div>
 				</div>
 		
 		</div>
