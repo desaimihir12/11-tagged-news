@@ -68,6 +68,12 @@
 	all_posts{
 		margin-left: 30%;
 	}
+	.form_url{
+		width: auto;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
 </style>
 
 <body>
@@ -96,6 +102,13 @@
 							<a href="{% url 'blog:detail' blog.slug %}" style="text-decoration: none">{{blog.title}}</a>
 						</a>
 					</div>
+
+					{% if blog.form_url %}
+					<div class="form_url">
+						<a href="{{blog.form_url}}">{{blog.form_url}}</a>
+					</div>
+					{% endif %}
+		
 					<div class="content">
 						{{blog.body}}
 					</div>	
@@ -103,9 +116,11 @@
 					  <img src="https://picsum.photos/200">
 					  <img src={{obj.image.url}}>
 					</div> -->
+					{% if blog.image %}
 					<div class="ui segment">
 						<img class="ui centered medium image", src={{blog.image.url}} >
 					</div>
+					{% endif %}
 					<div class="content">
 						<div class="all-buttons">
 							<!-- show votes,upvote and downvote -->
