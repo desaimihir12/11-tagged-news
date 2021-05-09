@@ -31,6 +31,12 @@
 	.form-control{
 		border-radius: 0.9rem;
 	}
+	.form_url{
+		width: auto;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
 
 	
 
@@ -43,13 +49,22 @@
 <div class="container">
 	<div class="row">
 
+
 		<!-- Blog Post -->
 		<div class="card m-auto">
+	
 			{% if blog_post.image %}
 			<img class="card-img-top" src="{{blog_post.image.url}}">
 			{% endif %}
 			<div class="card-body mt-2 mb-2">
 			  <h2 class="card-title">{{blog_post.title}}</h2>
+
+			  {% if blog_post.form_url %}
+			<div class="form_url">
+				<a href="{{blog_post.form_url}}" >{{blog_post.form_url}}</a>
+			</div>
+			{% endif %}
+
 			  <p class="card-text">{{blog_post.body}}</p>
 			  {% if blog_post.author == request.user %}
 			  	<a href="{% url 'blog:editpost' blog_post.id %}" >Edit</a>
@@ -149,7 +164,7 @@
 												<i class="angle up icon"></i>
 											</button>
 										{% elif comm.type %}
-											<button class="ui disabled icon button">
+											<button class="ui icon button">
 												<i class="angle double up icon"></i>
 											</button>
 										{% else %}
@@ -170,7 +185,7 @@
 											<i class="angle down icon"></i>
 										</button>
 									{% elif not comm.type %}
-										<button class="ui disabled icon button">
+										<button class="ui icon button">
 										<i class="angle double down icon"></i>
 									</button>
 									{% else %}

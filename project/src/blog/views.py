@@ -187,7 +187,8 @@ def update_post_view(request, id):
 			initial={
 				'title':pos.title,
 				'body':pos.body,
-				'image':pos.image
+				'image':pos.image,
+				'form_url':pos.form_url
 			}
 		)
 

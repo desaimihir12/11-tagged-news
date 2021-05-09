@@ -25,6 +25,7 @@ class BlogPost(models.Model):
     slug                = models.SlugField(blank=True, unique=True)
     upvote              = models.IntegerField(default=0)
     downvote            = models.IntegerField(default=0)
+    form_url            = models.URLField(max_length=250, blank=True)
 
     def __str__(self):
         return self.title

@@ -32,6 +32,12 @@
 	{
 		/* width:49% ; */
 	}
+	.form_url{
+		width:auto;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
 </style>
 <script>
 	// $(document).ready(function(){
@@ -77,6 +83,11 @@
 							<a href="{% url 'blog:detail' obj.post.slug %}" style="text-decoration: none">{{obj.post.title}}</a>
 						</a>
 					</div>
+					{% if obj.post.form_url %}
+					<div class="form_url">
+						<a href="{{obj.post.form_url}}">{{obj.post.form_url}}</a>
+					</div>
+					{% endif %}
 					<div class="content">
 						{{obj.post.body}}
 					</div>	
@@ -97,7 +108,7 @@
 											<i class="angle up icon"></i>
 									  	</button>
 									{% elif obj.type %}
-										<button class="ui disabled icon button">
+										<button class="ui icon button">
 											<i class="angle double up icon"></i>
 									  	</button>
 									{% else %}
@@ -118,7 +129,7 @@
 										<i class="angle down icon"></i>
 								  	</button>
 								{% elif not obj.type %}
-									<button class="ui disabled icon button">
+									<button class="ui icon button">
 									<i class="angle double down icon"></i>
 								  </button>
 								{% else %}

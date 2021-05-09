@@ -17,10 +17,10 @@ class CreateBlogPostForm(forms.ModelForm):
 
 	class Meta:
 		model = BlogPost
-		fields = ['title', 'body', 'image']
+		fields = ['title', 'body', 'image', 'form_url']
 
 class UpdateBlogPostForm(forms.ModelForm):
 
 	class Meta:
 		model = BlogPost
-		fields = ['title', 'body', 'image']
+		fields = ['title', 'body', 'image', 'form_url']
